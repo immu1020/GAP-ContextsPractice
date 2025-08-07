@@ -52,6 +52,13 @@ jobs:
       - name: Generate summary report
         run: |
           echo "Test Summary Report" > ${{ env.REPORT_FILE }}
+          echo "Test Summary Report" > $REPORT_FILE
+          echo "Triggered by: ${{ github.actor }}" >> $REPORT_FILE
+          echo "Commit SHA: ${{ github.sha }}" >> $REPORT_FILE
+          echo "Branch: ${{ github.ref }}" >> $REPORT_FILE
+          echo "Repository: ${{ github.repository }}" >> $REPORT_FILE
+          echo "---" >> $REPORT_FILE
+
           for env in dev staging prod; do
             echo "Results for $env:" >> ${{ env.REPORT_FILE }}
             echo cat results_${env}.txt >> ${{ env.REPORT_FILE }}
