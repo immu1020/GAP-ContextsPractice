@@ -1,0 +1,41 @@
+name: Matrix strategies fail fast and indexes demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  print-message:
+    name: Print on ${{ matrix.os }} with Node.js ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [14, 17.5.9, 16]
+        include:
+          - os: ubuntu-latest
+            node-version: 14
+            index: 1
+          - os: ubuntu-latest
+            node-version: 17.5.9
+            index: 2
+          - os: ubuntu-latest
+            node-version: 16
+            index: 3
+          - os: windows-latest
+            node-version: 14
+            index: 4
+          - os: windows-latest
+            node-version: 17.5.9
+            index: 5
+          - os: windows-latest
+            node-version: 16
+            index: 6
+
+    steps:
+      - name: Print message
+        run: echo "Hello from job index ${{ matrix.index }} on ${{ matrix.os }} with Node.js ${{ matrix.node-version }}"
+
+      - name: Simulate failure on Node 17.5.9
+        if: matrix.node-version == '17.5.9'
+        run: exit 1
