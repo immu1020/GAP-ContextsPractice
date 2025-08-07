@@ -19,7 +19,7 @@ jobs:
       - name: Count tests
         id: count_tests
         run: |
-         count=$(grep -c '^Test:' ${{ env.TEST_FILE }})
+         echo count=$(grep -c '^Test:' ${{ env.TEST_FILE }})
          echo "total=$count" >> $GITHUB_OUTPUT
 
 
