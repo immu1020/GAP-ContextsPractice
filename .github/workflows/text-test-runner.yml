@@ -1,0 +1,59 @@
+name: Text-Based Test Runner
+
+on:
+  workflow_dispatch:
+
+env:
+  TEST_FILE: tests.txt
+  REPORT_FILE: report.txt
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      test_count: ${{ steps.count_tests.outputs.total }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Count tests
+        id: count_tests
+        run: |
+          count=$(grep -c '^Test:' ${{ env.TEST_FILE }})
+          echo "total=$count" >> $GITHUB_OUTPUT
+
+  run-tests:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [dev, staging, prod]
+    env:
+      APP_NAME: ${{ vars.APP_NAME }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Simulate test execution in ${{ matrix.env }}
+        run: |
+          echo "Running tests for $APP_NAME in ${{ matrix.env }} environment..."
+          grep '^Test:' ${{ env.TEST_FILE }} > results_${{ matrix.env }}.txt
+
+  report:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    env:
+      ANALYSIS_SECRET: ${{ secrets.ANALYSIS_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Generate summary report
+        run: |
+          echo "Test Summary Report" > ${{ env.REPORT_FILE }}
+          for env in dev staging prod; do
+            echo "Results for $env:" >> ${{ env.REPORT_FILE }}
+            cat results_${env}.txt >> ${{ env.REPORT_FILE }}
+            echo "---" >> ${{ env.REPORT_FILE }}
+          done
+          echo "Analysis completed using secret token: $ANALYSIS_SECRET"
