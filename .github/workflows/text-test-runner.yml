@@ -19,7 +19,7 @@ jobs:
       - name: Count tests
         id: count_tests
         run: |
-         echo count=$(grep -c '^Test' ${{ env.TEST_FILE }})
+         echo count=$(grep -c '^TEST' ${{ env.TEST_FILE }})
          echo "total=$count" >> $GITHUB_OUTPUT
 
 
@@ -38,7 +38,7 @@ jobs:
       - name: Simulate test execution in ${{ matrix.env }}
         run: |
           echo "Running tests for $APP_NAME in ${{ matrix.env }} environment..."
-          echo grep '^Test' ${{ env.TEST_FILE }} > results_${{ matrix.env }}.txt
+          echo grep '^TEST' ${{ env.TEST_FILE }} > results_${{ matrix.env }}.txt
 
   report:
     needs: run-tests
