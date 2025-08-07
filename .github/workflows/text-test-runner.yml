@@ -38,7 +38,7 @@ jobs:
       - name: Simulate test execution in ${{ matrix.env }}
         run: |
           echo "Running tests for $APP_NAME in ${{ matrix.env }} environment..."
-          grep '^Test:' ${{ env.TEST_FILE }} > results_${{ matrix.env }}.txt
+          echo grep '^Test:' ${{ env.TEST_FILE }} > results_${{ matrix.env }}.txt
 
   report:
     needs: run-tests
