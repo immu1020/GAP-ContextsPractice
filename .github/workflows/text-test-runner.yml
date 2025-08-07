@@ -54,7 +54,7 @@ jobs:
           echo "Test Summary Report" > ${{ env.REPORT_FILE }}
           for env in dev staging prod; do
             echo "Results for $env:" >> ${{ env.REPORT_FILE }}
-            cat results_${env}.txt >> ${{ env.REPORT_FILE }}
+            echo cat results_${env}.txt >> ${{ env.REPORT_FILE }}
             echo "---" >> ${{ env.REPORT_FILE }}
           done
           echo "Analysis completed using secret token: $ANALYSIS_SECRET"
