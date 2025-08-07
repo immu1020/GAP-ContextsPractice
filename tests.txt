@@ -1,0 +1,5 @@
+TEST 1: Check if input.txt exists
+TEST 2: Check if input.txt contains 'GitHub'
+TEST 3: Count number of lines in input.txt
+TEST 4: Validate metadata.txt version format
+TEST 5: Confirm author name is present in metadata.txt
